@@ -34,7 +34,7 @@ app.get('/', (req, res)=>{
 // mongodb connection
 mongoose.connect(process.env.MONGODB_URI)
 .then(()=>console.log('Connected to MongoDB Atlas'))
-.catch((error) => console.error('error'));
+.catch((error) => console.error('error'+ error));
 
 //POST route
 router.post("/post", async (req, res) => {
