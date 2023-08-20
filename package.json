@@ -17,7 +17,8 @@
     "guid": "^0.0.12",
     "mongoose": "^7.1.1",
     "nodemailer": "^6.9.3",
-    "oauth": "^0.10.0"
+    "oauth": "^0.10.0",
+    "resend": "^1.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
