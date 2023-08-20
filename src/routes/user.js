@@ -1,12 +1,20 @@
 const express = require('express');
 const userSchema = require('../models/user');
-
+const { Resend } = require('resend');
 const router = express.Router();
 const OAuth = require('oauth');
 const nodemailer = require('nodemailer');
 
 const consumerKey = '1670996871802761216-nIJ7l2RkedcbcbDrHcgWVYeGXBdsfH';
 const consumerSecret = 'oDIZ2KYpzTIZOoHxZkiEhvoRiS08xbzZkN186s7XJ3fpo';
+const RESEND_API_KEY ='re_XvquHURP_7u87RrT9MSbeh8kroYgK3s7Q';
+
+
+
+const resend = new Resend(RESEND_API_KEY);
+const url_api = 'http://18.189.33.125/';
+const url_sitio = 'http://3.16.100.189:3000/';
+//import { Resend } from 'resend';
 
 //npm install nodemailer
 //npm i guid
@@ -95,31 +103,62 @@ router.post('/users', (req, res) => {
   </html>
   
   `;
-htmlContent = htmlContent.replace('~URL_CONFIRMACION~',"http://localhost:9000/api/validacion/" + user.id + "/" + user._id).replace('~USUARIO~',user.id);
-  var message = {
-    from: "jeomar.rl@gmail.com",
-    to: email,
+htmlContent = htmlContent.replace('~URL_CONFIRMACION~', url_api +"api/validacion/" + user.id + "/" + user._id).replace('~USUARIO~',user.id);
+try {
+  const data =  resend.emails.send({
+    from: 'Jingles <onboarding@resend.dev>',
+    to: [email],
     subject: "Verificación de correo",
-    text: "Código: " + llave,
-    html: "<p>link: http://localhost:9000/api/validacion/" + user.id + "/" + user._id + "</p>"
-  };
-  var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'jeomar.rl@gmail.com',
-      pass: 'ndbaclcneeuqwwnq'
-    }
+    html: htmlContent,
   });
+  //res.status(200).json({ data });
+} catch (error) {
+  res.status(500).json({ error });
+}  
 
-  transporter.sendMail(message, (error, info) => {
-    if (error) {
-      console.log("Error enviando email")
-      console.log(error.message)
-    } else {
-      console.log("Email enviado")
-    }
-  });
 
+  // (async function () {
+  //   try {
+  //     const data = await resend.emails.send({
+  //       from: 'Jingles <onboarding@resend.dev>',
+  //       to: '['+email+']',
+  //       subject: "Verificación de correo",
+  //       html: htmlContent,
+  //     });
+  
+  //     console.log(data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // })();
+
+// var message = {
+  //   from: "jeomar.rl@gmail.com",
+  //   to: email,
+  //   subject: "Verificación de correo",
+  //   text: "Código: " + llave,
+  //   html: "<p>link: http://localhost:9000/api/validacion/" + user.id + "/" + user._id + "</p>"
+  // };
+  // var transporter = nodemailer.createTransport({
+  //   service: 'gmail',
+  //   auth: {
+  //     user: 'jeomar.rl@gmail.com',
+  //     pass: 'ndbaclcneeuqwwnq'
+  //   }
+  // });
+
+  // transporter.sendMail(message, (error, info) => {
+  //   if (error) {
+  //     console.log("Error enviando email")
+  //     console.log(error.message)
+  //   } else {
+  //     console.log("Email enviado")
+  //   }
+  // });
+
+  
+
+  
   console.log(user);
   user.save()
     .then((data) => res.json(data))
@@ -288,7 +327,7 @@ router.get('/validacion/:email/:id', (req, res) => {
   <script type="text/javascript">
   function  alerta(){
    setTimeout(() => {
-    window.location.replace("http://localhost:3000/");
+    window.location.replace("~URL_SITIO~");
    }, 5000);
   }
    </script>
@@ -353,7 +392,7 @@ router.get('/validacion/:email/:id', (req, res) => {
     .then((data) => {
        
       if (data.modifiedCount > 0) {
-        htmlContent = htmlContent.replace('~USUARIO~', email).replace('~USUARIO_2~', email).replace('~URL_SITIO~','http://localhost:3000/');
+        htmlContent = htmlContent.replace('~USUARIO~', email).replace('~USUARIO_2~', email).replace('~URL_SITIO~',url_sitio);
         res.send(htmlContent);
       } else {
         htmlContent = `
