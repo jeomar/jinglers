@@ -390,23 +390,24 @@ router.get('/validacion/:email/:id', (req, res) => {
   userSchema
     .updateOne({ _id: id }, { $set: { validado: _validado } })
     .then((data) => {
-       
-      if (data.modifiedCount > 0) {
-        htmlContent = htmlContent.replace('~USUARIO~', email).replace('~USUARIO_2~', email).replace('~URL_SITIO~',url_sitio).replace('~URL_SITIO_2~',url_sitio);
-        res.send(htmlContent);
-      } else {
-        htmlContent = `
-        <html>
-          <head>
-            <title>Crypto Jingles</title>
-          </head>
-          <body>
-            <h1>Correo no fue validado</h1>
-          </body>
-        </html>
-      `;
-        res.send(htmlContent);
-      }
+      htmlContent = htmlContent.replace('~USUARIO~', email).replace('~USUARIO_2~', email).replace('~URL_SITIO~',url_sitio).replace('~URL_SITIO_2~',url_sitio);
+      res.send(htmlContent);
+      // if (data.modifiedCount > 0) {
+      //   htmlContent = htmlContent.replace('~USUARIO~', email).replace('~USUARIO_2~', email).replace('~URL_SITIO~',url_sitio).replace('~URL_SITIO_2~',url_sitio);
+      //   res.send(htmlContent);
+      // } else {
+      //   htmlContent = `
+      //   <html>
+      //     <head>
+      //       <title>Crypto Jingles</title>
+      //     </head>
+      //     <body>
+      //       <h1>Correo no fue validado</h1>
+      //     </body>
+      //   </html>
+      // `;
+      //   res.send(htmlContent);
+      // }
     })
     .catch((error) => {
       res.json({ message: 'Error en validación de correo' });
