@@ -378,7 +378,7 @@ router.get('/validacion/:email/:id', (req, res) => {
               Tu correo electrónico ha sido verificado con éxito. 
               Serás redirigido a nuestro sitio web en un máximo de 5 segundos.</p>
           <p>Si esto no sucede, por favor haz clic en el botón de abajo:</p>
-          <a href="~URL_SITIO~">Cryptojingle Web</a>
+          <a href="~URL_SITIO_2~">Cryptojingle Web</a>
           <p>~USUARIO_2~ Gracias por confirmar tu correo electrónico.</p>
           <p>Te esperamos activo en la comunidad</p>
           <p>Cryptojingle te desea lo mejor!</p>
@@ -392,7 +392,7 @@ router.get('/validacion/:email/:id', (req, res) => {
     .then((data) => {
        
       if (data.modifiedCount > 0) {
-        htmlContent = htmlContent.replace('~USUARIO~', email).replace('~USUARIO_2~', email).replace('~URL_SITIO~',url_sitio);
+        htmlContent = htmlContent.replace('~USUARIO~', email).replace('~USUARIO_2~', email).replace('~URL_SITIO~',url_sitio).replace('~URL_SITIO_2~',url_sitio);
         res.send(htmlContent);
       } else {
         htmlContent = `
